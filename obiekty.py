@@ -61,6 +61,8 @@ class Kolec(ObiektBase):
         _,_,x,y,_,_ = self.game.getPositions()
         print(x,y)
         self.game.setGracz(x,y)
+        self.game.flow.akcjeLeft = 0
+        self.game.flow.addDodatkowyTekst("Kolec. AŁ.")
 
 class Drzwi(ObiektBase):
     def getZnak(self):
