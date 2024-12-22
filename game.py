@@ -5,7 +5,8 @@ import os
 # 0 - puste pole
 # 1 - start
 # 2 - koniec
-RodzajePol = ['O','X','$']
+# 3 - kolec
+RodzajePol = ['O','X','$','^']
 # ŚCIANY
 # 0 - brak
 # 1 - ściana
@@ -187,8 +188,12 @@ class Game:
         nexty = nexty + ry
         odkryte[nexty][nextx] = True
 
-        self.pospx += rx
-        self.pospy += ry
+        if pola[nexty][nextx] == 3: #KOLEC
+            self.pospx = self.startpx
+            self.pospy = self.startpy
+        else:
+            self.pospx += rx
+            self.pospy += ry
         self.reloadGraczPoz()
         return True
 
