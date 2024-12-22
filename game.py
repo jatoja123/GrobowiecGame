@@ -5,22 +5,9 @@ class Game:
     won = False
     skanowania = 0
     mapowania = 0
-
-    def Znaki2Rodzaje(self, znak):
-        return {
-            'O': PustePole(self, False, False),
-            'X': PustePole(self, True, False), # poczatek
-            '$': PustePole(self, False, True), # koniec
-            '^': Kolec(self),
-            '.': PustaSciana(self),
-            '#': Sciana(self),
-        }[znak]
-        
+    flow = None
 
     def __init__(self, w, h, inputGame, randomize):
-        # Uzywane do odczytywania mapy z pliku
-        
-
         self.w = w # [pól]
         self.h = h # [pól]   
         self.n = 1 + 2 * w
@@ -48,6 +35,18 @@ class Game:
         for y in range(m):
             for x in range(n):
                 self.pola[y][x].setPos(x, y)
+    
+    def Znaki2Rodzaje(self, znak):
+        return {
+            'O': PustePole(self, False, False),
+            'X': PustePole(self, True, False), # poczatek
+            '$': PustePole(self, False, True), # koniec
+            '^': Kolec(self),
+            '.': PustaSciana(self),
+            '|': Sciana(self),
+            '[' : Drzwi(self),
+            '#' : Bagno(self),
+        }[znak]
 
     def pole2Tab(self, x, y):
         # 0 0 -> 1 1
@@ -60,6 +59,10 @@ class Game:
         nx = int((x - 1) / 2)
         ny = int((y - 1) / 2)
         return (nx, ny)
+    
+    def turnStart(self):
+        pole = self.pola[self.posy][self.posx]
+        pole.onStart()
     
     def readMap(self, input):
         global RodzajePol, RodzajeScian
@@ -191,8 +194,6 @@ class Game:
         odkryteKordyY.sort()
 
         return (odkryteKordyX[0]+odkryteKordyX[-1])/2, (odkryteKordyY[0]+odkryteKordyY[-1])/2
-
-
 
     # AKCJE
     def tryRuch(self, rx, ry):

@@ -10,10 +10,10 @@ class ObiektBase:
         return True
     def onEnter(self):
         pass
+    def onStart(self):
+        pass
 
 class Sciana(ObiektBase):
-    def setPos(self, x, y):
-        super().setPos(x,y)
     def getZnak(self):
         x = self.x
         y = self.y
@@ -61,5 +61,22 @@ class Kolec(ObiektBase):
         _,_,x,y,_,_ = self.game.getPositions()
         print(x,y)
         self.game.setGracz(x,y)
+
+class Drzwi(ObiektBase):
+    def getZnak(self):
+        return '∏'
+    def canEnter(self):
+        return True
+    def onEnter(self):
+        self.game.flow.akcjeLeft = 0
+        self.game.flow.addDodatkowyTekst("Otwierasz drzwi.")
         
+class Bagno(ObiektBase):
+    def getZnak(self):
+        return '#'
+    def canEnter(self):
+        return True
+    def onStart(self):
+        self.game.flow.addDodatkowyTekst("Stoisz na bagnie.")
+        self.game.flow.akcjeLeft /= 2
 
