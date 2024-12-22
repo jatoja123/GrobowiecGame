@@ -177,6 +177,22 @@ class Game:
                 res = res + znak
             res = res + '\n'
         return res
+    
+    def getMiddlePole(self):
+        odkryteKordyX = []
+        odkryteKordyY = []
+        for y in range(self.h):
+            for x in range(self.w):
+                tx, ty = self.pole2Tab(x,y)
+                if self.odkryte[ty][tx]:
+                    odkryteKordyX.append(tx)
+                    odkryteKordyY.append(ty)
+        odkryteKordyX.sort()
+        odkryteKordyY.sort()
+
+        return (odkryteKordyX[0]+odkryteKordyX[-1])/2, (odkryteKordyY[0]+odkryteKordyY[-1])/2
+
+
 
     # AKCJE
     def tryRuch(self, rx, ry):
