@@ -4,11 +4,13 @@ import os
 clear = lambda: os.system('cls')
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
-# USTAWIENIA
+# --- USTAWIENIA ---
 w = 4
 h = 4
 mapowania = 2
 skanowania = 1
+akcjeWTurze = 2
+tylkoJednoliteAkcje = False # czy jedyne dozwolone akcje to akcje w jednym kierunku np. AA, DD itd
 
 # Ile graczy?
 playerCount = int(input("Liczba graczy: "))
@@ -32,12 +34,19 @@ while True:
             i += 1
             continue
 
-        while True: #AŻ dobry input
-            clear()
-            print(f"Ruch {ileRuchow} | Gracz {i} <<")
-            print(game.mapa())
-            akcja = input('Akcja: ')
+        # INPUT gracza
+        clear()
+        print(f"Ruch {ileRuchow} | Gracz {i} <<")
+        print(game.mapa())
+        inputAkcje = input('Akcja: ')
+        for i in range(len(inputAkcje)):
+            if i >= akcjeWTurze:
+                break
 
+            if i > 0 and tylkoJednoliteAkcje and inputAkcje[i-1] != inputAkcje[i]:
+                break
+            
+            akcja = inputAkcje[i]
             if akcja == 'o': #SKANOWANIE
                 game.skanowania -= 1
                 if game.skanowania < 0:
@@ -64,12 +73,11 @@ while True:
                         print(game.mapa(True))
                         skip = input('...')
                         break
-            clear()
-            print(f"Ruch {ileRuchow} | Gracz {i}")
-            print(game.mapa())
-            skip = input('...')
-            i += 1
-            break
+        clear()
+        print(f"Ruch {ileRuchow} | Gracz {i}")
+        print(game.mapa())
+        skip = input('...')
+        i += 1
     ileRuchow += 1
         
 input('Wszyscy gracze wygrali!')
