@@ -7,7 +7,7 @@ class Game:
     mapowania = 0
     flow = None
 
-    def __init__(self, w, h, inputGame, randomize):
+    def __init__(self, w, h, inputGame, mapType, mapInput=""):
         self.w = w # [pól]
         self.h = h # [pól]   
         self.n = 1 + 2 * w
@@ -26,10 +26,15 @@ class Game:
             self.pola[y][0] = Sciana(self) 
             self.pola[y][n-1] = Sciana(self)
         
-        if randomize:
+        if mapType == 0:
             self.randomMap()
+        elif mapType == 1:
+            with open(inputGame, "r") as f:
+                text = f.read()
+                print(text)
+                self.readMap(text)
         else:
-            self.readMap(inputGame)
+            self.readMap(mapInput)
 
         # init pola
         for y in range(m):
@@ -64,8 +69,7 @@ class Game:
         pole = self.pola[self.posy][self.posx]
         pole.onStart()
     
-    def readMap(self, input):
-        global RodzajePol, RodzajeScian
+    def readMap(self, text):
         n = self.n
         m = self.m
         pola = self.pola
@@ -73,28 +77,26 @@ class Game:
         starty = 0
         endx = 0
         endy = 0
-        with open(input, "r") as f:
-            y = 0
-            for line in f:
-                txt = line.strip()
-                for x in range(n):
-                    curr = txt[x]
-                    try:
-                        pole = self.Znaki2Rodzaje(curr)
-                        pola[y][x] = pole
-                        if pole.__class__ == PustePole: #wykryj start lub koniec
-                            pustePole = pole
-                            pustePole.__class__ = PustePole
-                            (czyStart, czyKoniec) = pustePole.getStartKoniec()
-                            if czyStart:
-                                startx = x
-                                starty = y
-                            elif czyKoniec:
-                                endx = x
-                                endy = y
-                    except:
-                        pass
-                y += 1
+        y = 0
+        for txt in text.split('\n'):
+            for x in range(n):
+                curr = txt[x]
+                try:
+                    pole = self.Znaki2Rodzaje(curr)
+                    pola[y][x] = pole
+                    if pole.__class__ == PustePole: #wykryj start lub koniec
+                        pustePole = pole
+                        pustePole.__class__ = PustePole
+                        (czyStart, czyKoniec) = pustePole.getStartKoniec()
+                        if czyStart:
+                            startx = x
+                            starty = y
+                        elif czyKoniec:
+                            endx = x
+                            endy = y
+                except:
+                    pass
+            y += 1
         (startpx, startpy) = self.tab2Pole(startx, starty)
         (endpx, endpy) = self.tab2Pole(endx, endy)
         self.setupPoczIKon(startpx, startpy, endpx, endpy)

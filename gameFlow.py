@@ -16,8 +16,21 @@ class GameFlow:
         self.games = []
 
         for i in range(playerCount):
-            filename = input(f"Nazwa pliku {i}. gry (rnd aby losowa):")
-            game = Game(w,h,filename,filename == 'rnd')
+            filename = input(f"Nazwa pliku {i}. gry (rnd aby losowa, input aby ręcznie wprowadzić):")
+            mapType = 1
+            mapInput = ""
+            if filename == 'rnd':
+                mapType = 0
+            if filename == 'input':
+                mapType = 2
+                print(f"Wprowadź mapę linika po linijce ({h} linijek)")
+                mapLines = []
+                for x in range(2*h+1):
+                    mapLine = input(f"Wiersz {x}:")
+                    mapLines.append(mapLine)
+                mapInput = '\n'.join(mapLines)
+
+            game = Game(w,h,filename,mapType,mapInput)
             game.mapowania = mapowania
             game.skanowania = skanowania
             game.flow = self
