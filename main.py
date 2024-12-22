@@ -28,11 +28,12 @@ while True:
         break
     i = 0
     for game in games:
+        if game.won:
+            continue
+
         while True: #AŻ dobry input
             clear()
-            if game.won:
-                continue
-            print(f"Ruch {ileRuchow} | Gracz {i}")
+            print(f"Ruch {ileRuchow} | Gracz {i} <<")
             print(game.mapa())
             akcja = input('Akcja: ')
 
@@ -41,6 +42,7 @@ while True:
                 if game.skanowania < 0:
                     continue
                 game.skanuj()
+                break
             
             elif akcja == 'm': #MAPOWANIE
                 game.mapowania -= 1
@@ -59,6 +61,11 @@ while True:
                         clear()
                         print(f"WIN WIN WIN WIN ({ileRuchow} ruchow) WIN WIN WIN WIN")
                         print(game.mapa(True))
+                        skip = input('...')
+                        break
+            clear()
+            print(f"Ruch {ileRuchow} | Gracz {i}")
+            print(game.mapa())
             skip = input('...')
             i += 1
             break

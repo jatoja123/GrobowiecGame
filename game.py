@@ -206,7 +206,7 @@ class Game:
     
     def skanuj(self):
         odl = max(abs(self.pospx-self.endpx),abs(self.pospy-self.endpy))
-        print(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
+        input(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
 
     def mapuj(self):
         odkryte = self.odkryte
