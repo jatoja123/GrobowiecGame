@@ -1,22 +1,26 @@
 import random
-import os
-
-# POLA
-# 0 - puste pole
-# 1 - start
-# 2 - koniec
-# 3 - kolec
-RodzajePol = ['O','X','$','^']
-# ŚCIANY
-# 0 - brak
-# 1 - ściana
-RodzajeScian = ['.','#']
+from obiekty import *
 
 class Game:
     won = False
     skanowania = 0
     mapowania = 0
+
+    def Znaki2Rodzaje(self, znak):
+        return {
+            'O': PustePole(self, False, False),
+            'X': PustePole(self, True, False), # poczatek
+            '$': PustePole(self, False, True), # koniec
+            '^': Kolec(self),
+            '.': PustaSciana(self),
+            '#': Sciana(self),
+        }[znak]
+        
+
     def __init__(self, w, h, inputGame, randomize):
+        # Uzywane do odczytywania mapy z pliku
+        
+
         self.w = w # [pól]
         self.h = h # [pól]   
         self.n = 1 + 2 * w
@@ -24,21 +28,26 @@ class Game:
 
         n = self.n
         m = self.m
-        self.pola = [[0 for x in range(n)] for y in range(m)]
+        self.pola = [[ObiektBase(self) for x in range(n)] for y in range(m)]
         self.odkryte = [[False for x in range(n)] for y in range(m)]
         # ramka X
-        self.pola[0] = [1 for x in range(n)]
-        self.pola[n-1] = [1 for x in range(n)]
+        self.pola[0] = [Sciana(self) for x in range(n)]
+        self.pola[m-1] = [Sciana(self)  for x in range(n)]
         
         # ramka Y
         for y in range(m):
-            self.pola[y][0] = 1
-            self.pola[y][m-1] = 1
+            self.pola[y][0] = Sciana(self) 
+            self.pola[y][n-1] = Sciana(self)
         
         if randomize:
             self.randomMap()
         else:
             self.readMap(inputGame)
+
+        # init pola
+        for y in range(m):
+            for x in range(n):
+                self.pola[y][x].setPos(x, y)
 
     def pole2Tab(self, x, y):
         # 0 0 -> 1 1
@@ -67,18 +76,21 @@ class Game:
                 txt = line.strip()
                 for x in range(n):
                     curr = txt[x]
-                    if curr in RodzajePol:
-                        pi = RodzajePol.index(curr)
-                        pola[y][x] = pi
-                        if pi == 1: #ZNALEZIONO START
-                            startx = x
-                            starty = y
-                        elif pi == 2: #ZNALEZIONO KONIEC
-                            endx = x
-                            endy = y
-                    elif curr in RodzajeScian:
-                        si = RodzajeScian.index(curr)
-                        pola[y][x] = si
+                    try:
+                        pole = self.Znaki2Rodzaje(curr)
+                        pola[y][x] = pole
+                        if pole.__class__ == PustePole: #wykryj start lub koniec
+                            pustePole = pole
+                            pustePole.__class__ = PustePole
+                            (czyStart, czyKoniec) = pustePole.getStartKoniec()
+                            if czyStart:
+                                startx = x
+                                starty = y
+                            elif czyKoniec:
+                                endx = x
+                                endy = y
+                    except:
+                        pass
                 y += 1
         (startpx, startpy) = self.tab2Pole(startx, starty)
         (endpx, endpy) = self.tab2Pole(endx, endy)
@@ -95,18 +107,24 @@ class Game:
             py = random.randint(0, h-1)
 
             (x, y) = self.pole2Tab(px, py)
-            self.pola[y+1][x] = 1 #prawa sciana
+            self.pola[y+1][x] = Sciana(self) #prawa sciana
         for i in range(scianyPoz):
             px = random.randint(0, w-1)
             py = random.randint(0, h-1)
 
             (x, y) = self.pole2Tab(px, py)
-            self.pola[y][x-1] = 1 #gorna sciana
+            self.pola[y][x-1] = Sciana(self) #gorna sciana
 
         startpx = random.randint(0, w - 1)
         startpy = random.randint(0, h - 1)
         endpx = random.randint(0, w - 1)
         endpy = random.randint(0, h - 1)
+
+        (startx, starty) = self.pole2Tab(startpx, startpy)
+        (endx, endy) = self.pole2Tab(endpx, endpy)
+        self.pola[starty][startx] = PustePole(self, True, False)
+        self.pola[endx][endy] = PustePole(self, False, True)
+
         self.setupPoczIKon(startpx, startpy, endpx, endpy)
     
     def setupPoczIKon(self, startpx, startpy, endpx, endpy):
@@ -115,11 +133,6 @@ class Game:
         self.endpx = endpx
         self.endpy = endpy
 
-        # START I KONIEC
-        (startx, starty) = self.pole2Tab(startpx, startpy)
-        (endx, endy) = self.pole2Tab(endpx, endpy)
-        self.pola[starty][startx] = 1
-        self.pola[endy][endx] = 2
         # POZYCJE GRACZA
         self.pospx = startpx
         self.pospy = startpy
@@ -131,9 +144,15 @@ class Game:
         (self.posx, self.posy) = self.pole2Tab(self.pospx,self.pospy)
         self.odkryte[self.posy][self.posx] = True
 
-    def mapa(self, all = False):
-        global RodzajePol
-        global RodzajeScian
+    def setGracz(self, x, y):
+        self.pospx = x
+        self.pospy = y
+        self.reloadGraczPoz()
+
+    def getPositions(self):
+        return self.pospx, self.pospy, self.startpx, self.startpy, self.endpx, self.endpy
+
+    def getMapa(self, all = False):
         pola = self.pola
         odkryte = self.odkryte
         n = self.n
@@ -144,7 +163,9 @@ class Game:
 
         for y in range(m):
             for x in range(n):
-                if not odkryte[y][x]:
+                pole = pola[y][x]
+
+                if not all and not odkryte[y][x]:
                     res = res + ' '
                     continue
 
@@ -152,21 +173,7 @@ class Game:
                     res = res + '@'
                     continue
 
-                sciana = False
-                if y%2==0 or x%2==0:
-                    sciana = True
-                znak = '!'
-                if sciana: # TO ŚCIANA
-                    znak = RodzajeScian[pola[y][x]]
-                    if znak == '#': # ZAMIEŃ ZWYKŁĄ ŚCIANĘ NA ŚCIANĘ Z ODPOWIEDNIĄ ORIENTACJĄ
-                        if y%2==0 and x%2 != 0:
-                            znak = '-'
-                        elif y%2!=0 and x%2 == 0:
-                            znak = '|'
-                        else:
-                            znak = '+'
-                else: # TO POLE
-                    znak = RodzajePol[pola[y][x]]
+                znak = pole.getZnak()
                 res = res + znak
             res = res + '\n'
         return res
@@ -179,23 +186,27 @@ class Game:
         pola = self.pola
 
         # sciana na drodze
-        nextx = posx + rx
-        nexty = posy + ry
-        odkryte[nexty][nextx] = True
+        scianax = posx + rx
+        scianay = posy + ry
+        sciana = pola[scianay][scianax]
+        odkryte[scianay][scianax] = True
         
-        if pola[nexty][nextx] != 0:
+        sciana.onEnter()
+        if not sciana.canEnter():
             return False
-        # kolejne pole ok
-        nextx = nextx + rx
-        nexty = nexty + ry
-        odkryte[nexty][nextx] = True
+        
+        # kolejne pole
+        polex = scianax + rx
+        poley = scianay + ry
+        pole = pola[poley][polex]
+        odkryte[poley][polex] = True
 
-        if pola[nexty][nextx] == 3: #KOLEC
-            self.pospx = self.startpx
-            self.pospy = self.startpy
-        else:
-            self.pospx += rx
-            self.pospy += ry
+        pole.onEnter()
+        if not pole.canEnter():
+            return False
+        
+        self.pospx += rx
+        self.pospy += ry
         self.reloadGraczPoz()
         return True
 
