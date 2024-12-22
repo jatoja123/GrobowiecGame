@@ -29,6 +29,7 @@ while True:
     i = 0
     for game in games:
         if game.won:
+            i += 1
             continue
 
         while True: #AŻ dobry input
