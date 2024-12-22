@@ -23,7 +23,7 @@ class GameFlow:
                 mapType = 0
             if filename == 'input':
                 mapType = 2
-                print(f"Wprowadź mape linika po linijce ({h} linijek)")
+                print(f"Wprowadz mape linika po linijce ({h} linijek)")
                 mapLines = []
                 for x in range(2*h+1):
                     mapLine = input(f"Wiersz {x}:")
