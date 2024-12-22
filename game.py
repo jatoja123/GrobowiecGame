@@ -14,6 +14,8 @@ RodzajeScian = ['.','#']
 
 class Game:
     won = False
+    skanowania = 0
+    mapowania = 0
     def __init__(self, w, h, inputGame, randomize):
         self.w = w # [pól]
         self.h = h # [pól]   
@@ -201,3 +203,22 @@ class Game:
         if self.pospx == self.endpx and self.pospy == self.endpy:
             return True
         return False
+    
+    def skanuj(self):
+        odl = max(abs(self.pospx-self.endpx),abs(self.pospy-self.endpy))
+        print(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
+
+    def mapuj(self):
+        odkryte = self.odkryte
+        posx = self.posx
+        posy = self.posy
+        odkryte[posy+1][posx] = True
+        odkryte[posy-1][posx] = True
+        odkryte[posy][posx+1] = True
+        odkryte[posy][posx-1] = True
+        odkryte[posy-1][posx-1] = True
+        odkryte[posy+1][posx-1] = True
+        odkryte[posy-1][posx+1] = True
+        odkryte[posy+1][posx+1] = True
+        print(f"Wynik mapowania:")
+        print(self.mapa())
