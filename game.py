@@ -44,32 +44,41 @@ class Game:
         ny = 2 * y + 1
         return (nx, ny)
     
+    def tab2Pole(self, x, y):
+        nx = int((x - 1) / 2)
+        ny = int((y - 1) / 2)
+        return (nx, ny)
+    
     def readMap(self, input):
         global RodzajePol, RodzajeScian
         n = self.n
         m = self.m
         pola = self.pola
-        startpx = 0
-        startpy = 0
-        endpx = 0
-        endpy = 0
+        startx = 0
+        starty = 0
+        endx = 0
+        endy = 0
         with open(input, "r") as f:
-            for (line, y) in f:
+            y = 0
+            for line in f:
                 txt = line.strip()
                 for x in range(n):
                     curr = txt[x]
-                    pi = RodzajePol.index(curr)
-                    si = RodzajeScian.index(curr)
-                    if pi >= 0:
+                    if curr in RodzajePol:
+                        pi = RodzajePol.index(curr)
                         pola[y][x] = pi
                         if pi == 1: #ZNALEZIONO START
-                            startpx = x
-                            startpy = y
+                            startx = x
+                            starty = y
                         elif pi == 2: #ZNALEZIONO KONIEC
-                            endpx = x
-                            endpy = y
-                    elif si >= 0:
+                            endx = x
+                            endy = y
+                    elif curr in RodzajeScian:
+                        si = RodzajeScian.index(curr)
                         pola[y][x] = si
+                y += 1
+        (startpx, startpy) = self.tab2Pole(startx, starty)
+        (endpx, endpy) = self.tab2Pole(endx, endy)
         self.setupPoczIKon(startpx, startpy, endpx, endpy)
 
     def randomMap(self):
