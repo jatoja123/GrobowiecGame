@@ -66,7 +66,7 @@ class Kolec(ObiektBase):
 
 class Drzwi(ObiektBase):
     def getZnak(self):
-        return '∏'
+        return '['
     def canEnter(self):
         return True
     def onEnter(self):
