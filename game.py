@@ -3,8 +3,6 @@ from obiekty import *
 
 class Game:
     won = False
-    skanowania = 0
-    mapowania = 0
     flow = None
 
     def __init__(self, w, h, inputGame, mapType, mapInput=""):
@@ -27,6 +25,7 @@ class Game:
             self.pola[y][n-1] = Sciana(self)
 
         self.portale = [(None, None) for x in range(9)] # Portal A i B dla cyfr 1-9
+        self.burzenia = 0
         
         if mapType == 0:
             self.randomMap()
@@ -65,8 +64,15 @@ class Game:
             '^': Kolec(self),
             '.': PustaSciana(self),
             '|': Sciana(self),
+            '-': Sciana(self),
+            'I': Sciana(self, True),
+            '=': Sciana(self, True),
             '[' : Drzwi(self),
             '#' : Bagno(self),
+            '%': Pulapka(self),
+            '(': TajnePrzejscie(self),
+            '{': CzasowePrzejscie(self, False),
+            '}': CzasowePrzejscie(self, True)
         }[znak]
 
     def pole2Tab(self, x, y):
@@ -177,6 +183,18 @@ class Game:
         (self.pospx, self.pospy) = self.tab2Pole(x,y)
         self.reloadGraczPoz()
 
+    def zabij(self, zerujAkcje = True):
+        _,_,px,py,_,_ = self.getPositions()
+        self.setGraczP(px,py)
+        if zerujAkcje:
+            self.flow.akcjeLeft = 0
+
+    def tryWyburzanie(self):
+        if self.burzenia > 0:
+            self.burzenia -= 1
+            return True
+        return False
+
     def getPositions(self):
         return self.pospx, self.pospy, self.startpx, self.startpy, self.endpx, self.endpy
 
@@ -257,11 +275,11 @@ class Game:
             return True
         return False
     
-    def skanuj(self):
+    def kompasuj(self, left):
         odl = max(abs(self.pospx-self.endpx),abs(self.pospy-self.endpy))
-        input(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
+        self.flow.addDodatkowyTekst(f"Pozostalo {left} kompasow. Wynik kompasu: {odl}.\n")
 
-    def mapuj(self, zasiegMapowania):
+    def mapuj(self, zasiegMapowania, left):
         odkryte = self.odkryte
         posx = self.posx
         posy = self.posy
@@ -270,5 +288,10 @@ class Game:
                 dist = abs(posx-x)+abs(posy-y)
                 if dist <= zasiegMapowania:
                     odkryte[y][x] = True
-        print(f"Wynik mapowania:")
-        print(self.getMapa())
+        self.flow.addDodatkowyTekst(f"Pozostalo {left} map.\n")
+
+    def addBurzenie(self, left):
+       self.burzenia += 1
+       self.flow.addDodatkowyTekst(f"Pozostalo {left} wyburzen.\n")
+    
+    

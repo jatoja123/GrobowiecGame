@@ -1,13 +1,42 @@
 from gameFlow import GameFlow
+from akcje import *
+
+# --- INFO ---
+# Rodzaje PÓL
+#  O   puste
+#  X   pole startowe
+#  $   pole końcowe
+#  ^   kolec - po wejściu zabija (i zeruje akcje)
+#  #   bagno - startując na nim masz /2 akcji
+#  %   pułapka - startując na niej giniesz (jest ukryta dopóki nie umrzesz)
+#  @   portal - przenosi cię do zlinkowanego portalu (i zeruje akcje)
+#
+# Rodzaje ŚCIAN
+#  .   brak ściany, przejście
+#  | lub -  zwykła ściana - można zburzyć ją po użyciu akcji burzenia
+#  I lub =   twarda ściana - nie można jej zburzyć
+#  [  drzwi - przejście przez nie zużywa wszystkie akcje
+#  (  tajne przejście - można normalnie przejść, ale po użyciu mapowania pokazuje się jak zwykła ściana
+#  { lub }  przejście czasowe - można przejść nim tylko na nieparzystym/parzystym ruchu (odpowiednio { i } )
+#
+# Akcje
+#  w,s,a,d   ruch
+#  k  kompasowanie - pokazuje odległość od skarbu (max(distx,disty)) 
+#  m  mapowanie - ujawnia fragment terenu wokół
+#  b  burzenie - kolejne przejście przez zwykłą ścianę zburzy ją
 
 # --- USTAWIENIA ---
 w = 5
 h = 5
-mapowania = 3
-zasiegMapowania = 2
-skanowania = 2
+# Akcje inne
+akcje = [
+    AkcjaMapowanie(2, 1, 2), 
+    AkcjaKompasowanie(2, 1),
+    AkcjaBurzenie(2, 2)
+]
+# Akcja: Ruch
 limitAkcji = 3
 tylkoJednoliteAkcje = False # czy jedyne dozwolone akcje to akcje w jednym kierunku np. AA, DD itd
 limitSkretow = 1 # -1 zeby brak
 
-flow = GameFlow(w, h, mapowania, zasiegMapowania, skanowania, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
+flow = GameFlow(w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
