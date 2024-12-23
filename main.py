@@ -8,7 +8,7 @@ from akcje import *
 #  $   pole końcowe
 #  ^   kolec - po wejściu zabija (i zeruje akcje)
 #  #   bagno - startując na nim masz /2 akcji
-#  %   pułapka - startując na niej giniesz (jest ukryta dopóki nie umrzesz)
+#  %   pułapka - startując na niej giniesz (jest ukryta dopóki nie wejdziesz w nią)
 #  @   portal - przenosi cię do zlinkowanego portalu (i zeruje akcje)
 #
 # Rodzaje ŚCIAN
