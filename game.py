@@ -25,6 +25,8 @@ class Game:
         for y in range(m):
             self.pola[y][0] = Sciana(self) 
             self.pola[y][n-1] = Sciana(self)
+
+        self.portale = [(None, None) for x in range(9)] # Portal A i B dla cyfr 1-9
         
         if mapType == 0:
             self.randomMap()
@@ -41,6 +43,21 @@ class Game:
                 self.pola[y][x].setPos(x, y)
     
     def Znaki2Rodzaje(self, znak):
+        if znak >= '1' and znak <= '9': # portal
+            idx = int(znak)-int('1')
+            para = self.portale[idx]
+            portal = Portal(self)
+            if not para[0]:
+                self.portale[idx] = (portal, None)
+            else:
+                drugi = para[0]
+                drugi.__class__ = Portal
+                # połączenie między portalami
+                drugi.setDrugiPortal(portal) 
+                portal.setDrugiPortal(drugi)
+                self.portale[idx] = (drugi, portal)
+            return portal
+        
         return {
             'O': PustePole(self, False, False),
             'X': PustePole(self, True, False), # poczatek
@@ -94,6 +111,7 @@ class Game:
                             endx = x
                             endy = y
                 except:
+                    print(f'ERRR')
                     pass
             y += 1
         (startpx, startpy) = self.tab2Pole(startx, starty)
@@ -148,9 +166,15 @@ class Game:
         (self.posx, self.posy) = self.pole2Tab(self.pospx,self.pospy)
         self.odkryte[self.posy][self.posx] = True
 
-    def setGracz(self, x, y):
+    def setGraczP(self, x, y):
         self.pospx = x
         self.pospy = y
+        self.reloadGraczPoz()
+
+    def setGracz(self, x, y):
+        self.posx = x
+        self.posy = y
+        (self.pospx, self.pospy) = self.tab2Pole(x,y)
         self.reloadGraczPoz()
 
     def getPositions(self):
@@ -174,7 +198,7 @@ class Game:
                     continue
 
                 if x == posx and y == posy: # GRACZ
-                    res = res + '@'
+                    res = res + '&'
                     continue
 
                 znak = pole.getZnak()
@@ -237,14 +261,14 @@ class Game:
         odl = max(abs(self.pospx-self.endpx),abs(self.pospy-self.endpy))
         input(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
 
-    def mapuj(self, silaMapowania):
+    def mapuj(self, zasiegMapowania):
         odkryte = self.odkryte
         posx = self.posx
         posy = self.posy
         for y in range(self.m):
             for x in range(self.n):
                 dist = abs(posx-x)+abs(posy-y)
-                if dist <= silaMapowania:
+                if dist <= zasiegMapowania:
                     odkryte[y][x] = True
         print(f"Wynik mapowania:")
         print(self.getMapa())

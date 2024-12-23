@@ -4,6 +4,8 @@ class ObiektBase:
     def setPos(self, x, y):
         self.x = x
         self.y = y
+    def getPos(self):
+        return self.x, self.y
     def getZnak(self):
         return '!'
     def canEnter(self):
@@ -58,9 +60,8 @@ class Kolec(ObiektBase):
     def canEnter(self):
         return False
     def onEnter(self):
-        _,_,x,y,_,_ = self.game.getPositions()
-        print(x,y)
-        self.game.setGracz(x,y)
+        _,_,px,py,_,_ = self.game.getPositions()
+        self.game.setGraczP(px,py)
         self.game.flow.akcjeLeft = 0
         self.game.flow.addDodatkowyTekst("Kolec. Ouch Ouch.")
 
@@ -82,3 +83,22 @@ class Bagno(ObiektBase):
         self.game.flow.addDodatkowyTekst("Stoisz na bagnie.")
         self.game.flow.akcjeLeft /= 2
 
+class Portal(ObiektBase):
+    def __init__(self, game):
+        super().__init__(game)
+        self.drugiPortal = None
+    def setDrugiPortal(self, portal):
+        self.drugiPortal = portal
+    def getZnak(self):
+        if not self.drugiPortal:
+            return 'O' #Puste pole jeśli nie ma połaczenia
+        return '@'
+    def canEnter(self):
+        return False
+    def onEnter(self):
+        if not self.drugiPortal:
+            return
+        x, y = self.drugiPortal.getPos()
+        self.game.setGracz(x,y)
+        self.game.flow.akcjeLeft = 0
+        self.game.flow.addDodatkowyTekst("Portal. *ziuuum*")

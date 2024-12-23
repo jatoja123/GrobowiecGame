@@ -5,9 +5,9 @@ clear = lambda: os.system('cls')
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
-    def __init__(self, w, h, mapowania, silaMapowania, skanowania, limitAkcji, tylkoJednoliteAkcje, limitSkretow):
+    def __init__(self, w, h, mapowania, zasiegMapowania, skanowania, limitAkcji, tylkoJednoliteAkcje, limitSkretow):
         self.tylkoJednoliteAkcje = tylkoJednoliteAkcje
-        self.silaMapowania = silaMapowania
+        self.zasiegMapowania = zasiegMapowania
         self.limitAkcji = limitAkcji
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
@@ -102,7 +102,7 @@ class GameFlow:
                         game.mapowania -= 1
                         if game.mapowania < 0:
                             continue
-                        game.mapuj(self.silaMapowania)
+                        game.mapuj(self.zasiegMapowania)
 
                     else: # RUCH
                         if not akcja in Key2Ruch:
