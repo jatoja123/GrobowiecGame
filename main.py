@@ -24,6 +24,14 @@ from akcje import *
 #  k  kompasowanie - pokazuje odległość od skarbu (max(distx,disty)) 
 #  m  mapowanie - ujawnia fragment terenu wokół
 #  b  burzenie - kolejne przejście przez zwykłą ścianę zburzy ją
+# Akcje można stackować np. "wak", różne akcje zużywają różną ilość akcji na turę
+#
+# Mapmaking
+# - NIE zamieniać ścian z polami
+# - NIE duplikować startów (X) i końców ($)
+# - Aby linkować portale trzeba użyć cyfry (1-9) w dwóch miejscach a nie znaku @
+# - Robiąc ściany nie trzeba zachowywać orientacji (wszystkie mogą być '|')
+
 
 # --- USTAWIENIA ---
 w = 5
