@@ -85,7 +85,7 @@ class Drzwi(ObiektBase):
     def canEnter(self):
         return True
     def onEnter(self):
-        self.game.flow.akcjeLeft = 0
+        self.game.flow.setAkcjeLeft(0)
         self.game.flow.addDodatkowyTekst("Otwierasz drzwi.\n")
         
 class Bagno(ObiektBase):
@@ -95,7 +95,7 @@ class Bagno(ObiektBase):
         return True
     def onStart(self):
         self.game.flow.addDodatkowyTekst("Stoisz na bagnie.\n")
-        self.game.flow.akcjeLeft /= 2
+        self.game.flow.setAkcjeLeft(self.game.flow.getAkcjeLeft/2)
 
 class Portal(ObiektBase):
     def __init__(self, game):
@@ -114,7 +114,7 @@ class Portal(ObiektBase):
             return
         x, y = self.drugiPortal.getPos()
         self.game.setGracz(x,y)
-        self.game.flow.akcjeLeft = 0
+        self.game.flow.setAkcjeLeft(0)
         self.game.flow.addDodatkowyTekst("Portal. *ziuuum*\n")
 
 class Pulapka(ObiektBase):
@@ -183,3 +183,13 @@ class Prezent(ObiektBase):
                 self.game.flow.addDodatkowyTekst(f"Znalazles prezent! ({self.rodzaj})\n")
                 break
         self.game.flow.setAkcje(akcje)
+
+class KrzyweZwierciadlo(ObiektBase):
+    usuniecia = 3 #default
+    def getZnak(self):
+        return '\\'
+    def onEnter(self):
+        self.game.usunLosowoOdkryte(KrzyweZwierciadlo.usuniecia)
+        self.game.flow.addDodatkowyTekst(f"Uhh... Zapomnialem cos? ({KrzyweZwierciadlo.usuniecia})\n")
+    def canEnter(self):
+        return True

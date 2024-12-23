@@ -9,7 +9,7 @@ class AkcjaBase:
         if self.uzycia <= 0 or akcje + 1 < self.kosztAkcji:
             return False
         self.uzycia -= 1
-        game.flow.setAkcje(akcje - self.kosztAkcji + 1)
+        game.flow.setAkcjeLeft(akcje - self.kosztAkcji + 1)
         return True
     def dodajUzycie(self):
         self.uzycia += 1

@@ -1,5 +1,6 @@
 from gameFlow import GameFlow
 from akcje import *
+from obiekty import *
 
 # --- INFO ---
 # Rodzaje PÓL
@@ -19,6 +20,7 @@ from akcje import *
 #  [  drzwi - przejście przez nie zużywa wszystkie akcje
 #  (  tajne przejście - można normalnie przejść, ale po użyciu mapowania pokazuje się jak zwykła ściana
 #  { lub }  przejście czasowe - można przejść nim tylko na nieparzystym/parzystym ruchu (odpowiednio { i } )
+#  \  krzywe zwierciadlo - usuwa kilka losowych odkrytych elementow 
 #
 # Akcje
 #  w,s,a,d   ruch
@@ -50,5 +52,8 @@ akcje = [
 limitAkcji = 3
 tylkoJednoliteAkcje = False # czy jedyne dozwolone akcje to akcje w jednym kierunku np. AA, DD itd
 limitSkretow = 1 # -1 zeby brak
+
+# Inne
+KrzyweZwierciadlo.usuniecia = 3
 
 flow = GameFlow(w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)

@@ -40,14 +40,14 @@ class GameFlow:
         self.startFlow()
         input('Wszyscy gracze wygrali!')
 
-    def setAkcje(self, akcje):
-        self.akcjeLeft = akcje
-
     def addDodatkowyTekst(self, txt):
         self.dodatkowyTekst += txt
 
     def getAkcjeLeft(self):
         return self.akcjeLeft
+    
+    def setAkcjeLeft(self, akcje):
+        self.akcjeLeft = akcje
     
     def getIleRuchow(self):
         return self.ileRuchow

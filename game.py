@@ -79,7 +79,8 @@ class Game:
             '%': Pulapka(self),
             '(': TajnePrzejscie(self),
             '{': CzasowePrzejscie(self, False),
-            '}': CzasowePrzejscie(self, True)
+            '}': CzasowePrzejscie(self, True),
+            '\\': KrzyweZwierciadlo(self)
         }[znak]
 
     def pole2Tab(self, x, y):
@@ -300,5 +301,20 @@ class Game:
     def addBurzenie(self, left):
        self.burzenia += 1
        self.flow.addDodatkowyTekst(f"Pozostalo {left} wyburzen.\n")
+
+    def usunLosowoOdkryte(self, usun):
+        odkryte = self.odkryte
+        odkryteList = []
+        for y in range(self.m):
+            for x in range(self.n):
+                if odkryte[y][x]:
+                    odkryteList.append((x,y))
+        for i in range(usun):
+            if len(odkryteList) <= 0:
+                break
+            toUsun = odkryteList[random.randint(0, len(odkryteList)-1)]
+            odkryte[toUsun[1]][toUsun[0]] = False
+            odkryteList.remove(toUsun)
+
     
     
