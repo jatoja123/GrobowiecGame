@@ -5,11 +5,12 @@ class Game:
     won = False
     flow = None
 
-    def __init__(self, w, h, inputGame, mapType, mapInput=""):
+    def __init__(self, flow, w, h, inputGame, mapType, mapInput=""):
         self.w = w # [pól]
         self.h = h # [pól]   
         self.n = 1 + 2 * w
         self.m = 1 + 2 * h
+        self.flow = flow
 
         n = self.n
         m = self.m
@@ -57,16 +58,22 @@ class Game:
                 self.portale[idx] = (drugi, portal)
             return portal
         
+        # prezent
+        akcje = self.flow.getAkcje()
+        for akcja in akcje:
+            if znak == akcja.znakUzycia:
+                return Prezent(self, znak)
+
         return {
-            'O': PustePole(self, False, False),
+            'O': PustePole(self, False, False), # puste pole
             'X': PustePole(self, True, False), # poczatek
             '$': PustePole(self, False, True), # koniec
-            '^': Kolec(self),
-            '.': PustaSciana(self),
-            '|': Sciana(self),
-            '-': Sciana(self),
-            'I': Sciana(self, True),
-            '=': Sciana(self, True),
+            '^': Kolec(self), # kolec
+            '.': PustaSciana(self), # pusta sciana
+            '|': Sciana(self), # sciana zwykla pionowa
+            '-': Sciana(self), # sciana zwykla pozioma
+            'I': Sciana(self, True), # sciana twarda pionowa
+            '=': Sciana(self, True), # sciana twarda pozioma
             '[' : Drzwi(self),
             '#' : Bagno(self),
             '%': Pulapka(self),

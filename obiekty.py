@@ -162,3 +162,24 @@ class CzasowePrzejscie(ObiektBase):
         if (self.otwarteNaParzyste and ktoryRuch%2==0) or (not self.otwarteNaParzyste and ktoryRuch%2==1):
             return True
         return False
+    
+class Prezent(ObiektBase):
+    def __init__(self, game, rodzaj):
+        super().__init__(game)
+        self.odkryte = False
+        self.rodzaj = rodzaj
+    def getZnak(self):
+        if self.odkryte:
+            return 'O'
+        return '*'
+    def canEnter(self):
+        return True
+    def onEnter(self):
+        self.odkryte = True
+        akcje = self.game.flow.getAkcje()
+        for akcja in akcje:
+            if akcja.znakUzycia == self.rodzaj:
+                akcja.dodajUzycie()
+                self.game.flow.addDodatkowyTekst(f"Znalazles prezent! ({self.rodzaj})\n")
+                break
+        self.game.flow.setAkcje(akcje)

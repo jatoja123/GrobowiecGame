@@ -33,7 +33,7 @@ class GameFlow:
                     mapLines.append(mapLine)
                 mapInput = '\n'.join(mapLines)
 
-            game = Game(w,h,filename,mapType,mapInput)
+            game = Game(self,w,h,filename,mapType,mapInput)
             game.flow = self
             self.games.append(game)
 
@@ -46,11 +46,17 @@ class GameFlow:
     def addDodatkowyTekst(self, txt):
         self.dodatkowyTekst += txt
 
-    def getAkcje(self):
+    def getAkcjeLeft(self):
         return self.akcjeLeft
     
     def getIleRuchow(self):
         return self.ileRuchow
+    
+    def getAkcje(self):
+        return self.akcje
+    
+    def setAkcje(self, akcje):
+        self.akcje = akcje
     
     def printuj(self, skip = False, showAllMap = False):
         clear()

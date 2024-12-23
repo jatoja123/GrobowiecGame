@@ -10,6 +10,7 @@ from akcje import *
 #  #   bagno - startując na nim masz /2 akcji
 #  %   pułapka - startując na niej giniesz (jest ukryta dopóki nie wejdziesz w nią)
 #  @   portal - przenosi cię do zlinkowanego portalu (i zeruje akcje)
+#  *   prezent - w środku znajduje się dodatkowe użycie jakiejś akcji
 #
 # Rodzaje ŚCIAN
 #  .   brak ściany, przejście
@@ -24,6 +25,7 @@ from akcje import *
 #  k  kompasowanie - pokazuje odległość od skarbu (max(distx,disty)) 
 #  m  mapowanie - ujawnia fragment terenu wokół
 #  b  burzenie - kolejne przejście przez zwykłą ścianę zburzy ją
+#  r  samobojstwo - zabijasz sie, wracasz na start
 # Akcje można stackować np. "wak", różne akcje zużywają różną ilość akcji na turę
 #
 # Mapmaking
@@ -40,7 +42,8 @@ h = 5
 akcje = [
     AkcjaMapowanie(2, 1, 2), 
     AkcjaKompasowanie(2, 1),
-    AkcjaBurzenie(2, 2)
+    AkcjaBurzenie(2, 2),
+    AkcjaSamobojstwo(1, 3)
 ]
 # Akcja: Ruch
 limitAkcji = 3

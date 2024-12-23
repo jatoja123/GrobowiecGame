@@ -5,11 +5,14 @@ class AkcjaBase:
         self.kosztAkcji = kosztAkcji
         pass
     def uzyj(self, game):
-        akcje = game.flow.getAkcje()
-        if self.uzycia <= 0 or akcje < self.kosztAkcji:
+        akcje = game.flow.getAkcjeLeft()
+        if self.uzycia <= 0 or akcje + 1 < self.kosztAkcji:
             return False
+        self.uzycia -= 1
         game.flow.setAkcje(akcje - self.kosztAkcji + 1)
         return True
+    def dodajUzycie(self):
+        self.uzycia += 1
 
 class AkcjaMapowanie(AkcjaBase):
     znakUzycia = "m"
@@ -32,3 +35,10 @@ class AkcjaBurzenie(AkcjaBase):
     def uzyj(self, game):
         if super().uzyj(game):
             game.addBurzenie(self.uzycia)
+
+class AkcjaSamobojstwo(AkcjaBase):
+    znakUzycia = "r"
+    def uzyj(self, game):
+        if super().uzyj(game):
+            game.flow.addDodatkowyTekst(f"Popelniasz samobojstwo.\n")
+            game.zabij()
