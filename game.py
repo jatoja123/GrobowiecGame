@@ -237,17 +237,14 @@ class Game:
         odl = max(abs(self.pospx-self.endpx),abs(self.pospy-self.endpy))
         input(f"Wynik skanera: {odl}. Pozostalo {self.skanowania} skanowan.")
 
-    def mapuj(self):
+    def mapuj(self, silaMapowania):
         odkryte = self.odkryte
         posx = self.posx
         posy = self.posy
-        odkryte[posy+1][posx] = True
-        odkryte[posy-1][posx] = True
-        odkryte[posy][posx+1] = True
-        odkryte[posy][posx-1] = True
-        odkryte[posy-1][posx-1] = True
-        odkryte[posy+1][posx-1] = True
-        odkryte[posy-1][posx+1] = True
-        odkryte[posy+1][posx+1] = True
+        for y in range(self.m):
+            for x in range(self.n):
+                dist = abs(posx-x)+abs(posy-y)
+                if dist <= silaMapowania:
+                    odkryte[y][x] = True
         print(f"Wynik mapowania:")
-        print(self.mapa())
+        print(self.getMapa())

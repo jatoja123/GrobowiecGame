@@ -5,11 +5,13 @@ clear = lambda: os.system('cls')
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
-    def __init__(self, w, h, mapowania, skanowania, limitAkcji, tylkoJednoliteAkcje):
+    def __init__(self, w, h, mapowania, silaMapowania, skanowania, limitAkcji, tylkoJednoliteAkcje, limitSkretow):
         self.tylkoJednoliteAkcje = tylkoJednoliteAkcje
+        self.silaMapowania = silaMapowania
         self.limitAkcji = limitAkcji
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
+        self.limitSkretow = limitSkretow
 
         # Ile graczy?
         playerCount = int(input("Liczba graczy: "))
@@ -77,6 +79,8 @@ class GameFlow:
                 # INPUT gracza
                 self.printuj(False)
                 inputAkcje = input('Akcja: ')
+                poprzednieRuchy = []
+                zrobioneSkrety = 0
 
                 for i in range(len(inputAkcje)):
                     if self.akcjeLeft <= 0:
@@ -98,12 +102,20 @@ class GameFlow:
                         game.mapowania -= 1
                         if game.mapowania < 0:
                             continue
-                        game.mapuj()
+                        game.mapuj(self.silaMapowania)
 
                     else: # RUCH
                         if not akcja in Key2Ruch:
+                            self.addDodatkowyTekst(f"Nieprawidlowa akcja '{akcja}'\n")
                             continue
                         (rx, ry) = Key2Ruch[akcja]
+
+                        poprzednieRuchy.append((rx, ry))
+                        if zrobioneSkrety != -1 and len(poprzednieRuchy) > 1 and poprzednieRuchy[-1] != poprzednieRuchy[-2]: #ruch ze skrętem
+                            zrobioneSkrety += 1
+                            if zrobioneSkrety > self.limitSkretow:
+                                self.addDodatkowyTekst(f"Limit skretow to {self.limitSkretow}\n")
+                                continue
 
                         if game.tryRuch(rx, ry):
                             if game.checkWin():
