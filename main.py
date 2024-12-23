@@ -33,6 +33,7 @@ from akcje import *
 # - NIE duplikować startów (X) i końców ($)
 # - Aby linkować portale trzeba użyć cyfry (1-9) w dwóch miejscach a nie znaku @
 # - Robiąc ściany nie trzeba zachowywać orientacji (wszystkie mogą być '|')
+# - Aby postawić prezent użyj znaku akcji zamiast '*' - czyli k,m,r,b
 
 
 # --- USTAWIENIA ---
