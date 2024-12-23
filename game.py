@@ -31,7 +31,6 @@ class Game:
         elif mapType == 1:
             with open(inputGame, "r") as f:
                 text = f.read()
-                print(text)
                 self.readMap(text)
         else:
             self.readMap(mapInput)

@@ -111,6 +111,8 @@ class GameFlow:
                                 self.addDodatkowyTekst(f" !! WIN WIN WIN WIN ({self.ileRuchow} ruchow) WIN WIN WIN WIN !!")
                                 self.printuj(True, True)
                                 break
+                if game.won:
+                    continue
                 self.printuj(True)
                 self.graczI += 1
             self.ileRuchow += 1
