@@ -58,6 +58,9 @@ KrzyweZwierciadlo.usuniecia = 3
 
 ustawiaj = input("Chcesz zmienic ustawienia? (y/n) ")
 if ustawiaj == 'y':
+    print("Mapa")
+    h = int(input(f"Wysokosc mapy [{h}] "))
+    w = int(input(f"Szerokosc mapy [{w}] "))
     print("Ruch")
     limitAkcji = int(input(f"Akcje w turze [{limitAkcji}] "))
     tylkoJednoliteAkcje = bool(input(f"Czy jednolite akcje? [{tylkoJednoliteAkcje}] "))
