@@ -266,6 +266,11 @@ class Game:
         # kolejne pole
         polex = scianax + rx
         poley = scianay + ry
+
+        # czy out of bounds
+        if polex < 0 or polex >= self.n or poley < 0 or polex >= self.m:
+            return False
+
         pole = pola[poley][polex]
         odkryte[poley][polex] = True
 
