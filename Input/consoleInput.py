@@ -1,5 +1,5 @@
 import asyncio
-from gameInput import GameInput
+from Input.gameInput import GameInput
 import aioconsole
 
 

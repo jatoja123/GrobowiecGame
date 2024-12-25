@@ -1,5 +1,5 @@
 import random
-from obiekty import *
+from Game.obiekty import *
 
 class Game:
     won = False

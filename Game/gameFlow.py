@@ -1,4 +1,4 @@
-from game import Game
+from Game.game import Game
 import os
 import asyncio
 
