@@ -5,9 +5,12 @@ clear = lambda: os.system('cls')
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
-    def __init__(self, w, h, mapowania, skanowania, limitAkcji, tylkoJednoliteAkcje):
-        self.tylkoJednoliteAkcje = tylkoJednoliteAkcje
+    def __init__(self, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow):
         self.limitAkcji = limitAkcji
+        self.akcje = akcje
+        self.tylkoJednoliteAkcje = tylkoJednoliteAkcje
+        self.limitSkretow = limitSkretow
+
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
 
@@ -16,24 +19,44 @@ class GameFlow:
         self.games = []
 
         for i in range(playerCount):
-            filename = input(f"Nazwa pliku {i}. gry (rnd aby losowa):")
-            game = Game(w,h,filename,filename == 'rnd')
-            game.mapowania = mapowania
-            game.skanowania = skanowania
+            filename = input(f"Nazwa pliku {i}. gry (rnd aby losowa, input aby recznie wprowadzic):")
+            mapType = 1
+            mapInput = ""
+            if filename == 'rnd':
+                mapType = 0
+            if filename == 'input':
+                mapType = 2
+                print(f"Wprowadz mape linika po linijce ({h} linijek)")
+                mapLines = []
+                for x in range(2*h+1):
+                    mapLine = input(f"Wiersz {x}:")
+                    mapLines.append(mapLine)
+                mapInput = '\n'.join(mapLines)
+
+            game = Game(self,w,h,filename,mapType,mapInput)
             game.flow = self
             self.games.append(game)
 
         self.startFlow()
         input('Wszyscy gracze wygrali!')
 
-    def setAkcje(self, akcje):
-        self.akcjeLeft = akcje
-
     def addDodatkowyTekst(self, txt):
         self.dodatkowyTekst += txt
 
-    def getAkcje(self):
+    def getAkcjeLeft(self):
         return self.akcjeLeft
+    
+    def setAkcjeLeft(self, akcje):
+        self.akcjeLeft = akcje
+    
+    def getIleRuchow(self):
+        return self.ileRuchow
+    
+    def getAkcje(self):
+        return self.akcje
+    
+    def setAkcje(self, akcje):
+        self.akcje = akcje
     
     def printuj(self, skip = False, showAllMap = False):
         clear()
@@ -64,40 +87,48 @@ class GameFlow:
                 # INPUT gracza
                 self.printuj(False)
                 inputAkcje = input('Akcja: ')
+                poprzednieRuchy = []
+                zrobioneSkrety = 0
 
                 for i in range(len(inputAkcje)):
                     if self.akcjeLeft <= 0:
                         break
                     self.akcjeLeft -= 1
-
                     if i > 0 and self.tylkoJednoliteAkcje and inputAkcje[i-1] != inputAkcje[i]:
                         break
                     
                     akcja = inputAkcje[i]
-                    if akcja == 'o': #SKANOWANIE
-                        game.skanowania -= 1
-                        if game.skanowania < 0:
-                            continue
-                        game.skanuj()
-                        break
-                    
-                    elif akcja == 'm': #MAPOWANIE
-                        game.mapowania -= 1
-                        if game.mapowania < 0:
-                            continue
-                        game.mapuj()
 
-                    else: # RUCH
-                        if not akcja in Key2Ruch:
-                            continue
-                        (rx, ry) = Key2Ruch[akcja]
+                    znalezionoAkcje = False
+                    for rodzajAkcji in self.akcje:
+                        if rodzajAkcji.znakUzycia == akcja:
+                            rodzajAkcji.uzyj(game)
+                            znalezionoAkcje = True
+                            break
+                    if znalezionoAkcje:
+                        continue
 
-                        if game.tryRuch(rx, ry):
-                            if game.checkWin():
-                                game.won = True
-                                self.addDodatkowyTekst(f" !! WIN WIN WIN WIN ({self.ileRuchow} ruchow) WIN WIN WIN WIN !!")
-                                self.printuj(True, True)
-                                break
+                    # RUCH
+                    if not akcja in Key2Ruch:
+                        self.addDodatkowyTekst(f"Nieprawidlowa akcja '{akcja}'\n")
+                        continue
+                    (rx, ry) = Key2Ruch[akcja]
+
+                    poprzednieRuchy.append((rx, ry))
+                    if zrobioneSkrety != -1 and len(poprzednieRuchy) > 1 and poprzednieRuchy[-1] != poprzednieRuchy[-2]: #ruch ze skrętem
+                        zrobioneSkrety += 1
+                        if zrobioneSkrety > self.limitSkretow:
+                            self.addDodatkowyTekst(f"Limit skretow to {self.limitSkretow}\n")
+                            continue
+
+                    if game.tryRuch(rx, ry):
+                        if game.checkWin():
+                            game.won = True
+                            self.addDodatkowyTekst(f" !! WIN WIN WIN WIN ({self.ileRuchow} ruchow) WIN WIN WIN WIN !!")
+                            self.printuj(True, True)
+                            break
+                if game.won:
+                    continue
                 self.printuj(True)
                 self.graczI += 1
             self.ileRuchow += 1
