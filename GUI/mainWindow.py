@@ -1,13 +1,10 @@
-import sys
-
-from modules.menu import *
-from modules.map import *
-from modules.legend import *
-from modules.input import *
+from GUI.modules.menu import *
+from GUI.modules.map import *
+from GUI.modules.legend import *
+from GUI.modules.input import *
 
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
-    QApplication,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -66,17 +63,3 @@ class MainWindow(QMainWindow):
 
         self.central.setLayout(self.outerLayout)
         self.setCentralWidget(self.central)
-
-class Main():
-    def __init__(self):
-        super().__init__()
-        self.window = MainWindow()
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)  
-    window = MainWindow()
-
-    #o tu
-
-    window.show()
-    sys.exit(app.exec())
