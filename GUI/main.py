@@ -65,7 +65,6 @@ class MainWindow(QMainWindow):
         self.outerLayout.addLayout(self.playerLayout)
 
         self.central.setLayout(self.outerLayout)
-        self.setBaseSize(800, 400)
         self.setCentralWidget(self.central)
 
 if __name__ == "__main__":
