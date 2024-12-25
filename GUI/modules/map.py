@@ -49,7 +49,7 @@ class Map(QWidget):
 
             for x in range(cornerX, cornerX+blob.blob.width-1):
                 for y in range(cornerY, cornerY+blob.blob.height-1):
-                    if map[x][y].isDiscovered(): innerGrid.addWidget(QPushButton().setIcon(QIcon(f'C:\\Dev\\GrobowiecGame\\GUI\\icons\\{map[x][y].getIcon()}')), x-cornerX, y-cornerY)
+                    if map[x][y].isDiscovered(): innerGrid.addWidget(QPushButton().setIcon(QIcon(f'./GUI/icons/{map[x][y].getIcon()}')), x-cornerX, y-cornerY)
             
             self.Layout.addLayout(innerGrid, blob.gridPos)
     

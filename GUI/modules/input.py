@@ -28,7 +28,7 @@ class ConfirmButton():
         self.button.setFixedSize(size, size)
 
         if icon: 
-            self.button.setIcon(QIcon(f'C:\\Dev\\GrobowiecGame\\GUI\\icons\\{icon}'))
+            self.button.setIcon(QIcon(f'./GUI/icons/{icon}'))
             self.button.setIconSize(QSize(int(self.size), int(self.size)))
         else:
             self.button.setText(text)
@@ -69,6 +69,7 @@ class ConfirmButton():
 
     def onPress(self):
         #self.parent.parent.AcceptMove(self.parent.getPressedOrder())
+        print(self.parent.getPressedOrder())
         self.parent.resetOrder()
         for btn in self.parent.buttons:
             btn.resetState()
@@ -134,7 +135,7 @@ class Button():
         self.button.setStyleSheet(self.notPressedStyle)
 
         if icon: 
-            self.button.setIcon(QIcon(f'C:\\Dev\\GrobowiecGame\\GUI\icons\\{icon}'))
+            self.button.setIcon(QIcon(f'./GUI/icons/{icon}'))
             self.button.setIconSize(QSize(int(self.size), int(self.size)))
         else:
             self.button.setText(text)
