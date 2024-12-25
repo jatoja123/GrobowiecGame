@@ -14,23 +14,45 @@ class ObiektBase:
         pass
     def onStart(self):
         pass
+    def getIcon(self):
+        pass
+
+def Orientacja(x, y):
+    if x%2==1 and y%2==0:
+        return 0
+    elif x%2==0 and y%2==1:
+        return 1
+    else:
+        return -1
 
 class Sciana(ObiektBase):
     def __init__(self, game, twarda = False):
         super().__init__(game)
         self.zburzone = False
         self.twarda = twarda
+        self.tlumaczenia = {
+            ',': 'broke',
+            '=' : 'hard_poz',
+            'I': 'hard_pion',
+            '+': 'mid',
+            '-': 'poz',
+            '|': 'pion',
+        }
     def getZnak(self):
         if self.zburzone:
             return ','
         x = self.x
         y = self.y
-        if x%2==1 and y%2==0:
+        o = Orientacja(x,y)
+        if o==0:
             return '=' if self.twarda else '-'
-        elif x%2==0 and y%2==1:
+        elif o==1:
             return 'I' if self.twarda else '|'
         else:
             return '+'
+    def getIcon(self):
+        z = self.getZnak()
+        return 'wall_'+self.tlumaczenia[z]
     def canEnter(self):
         if self.twarda:
             return False
@@ -66,6 +88,13 @@ class PustePole(ObiektBase):
             return '$'
         else:
             return '0'
+    def getIcon(self):
+        if self.czyStart:
+            return 'field_start'
+        elif self.czyKoniec:
+            return 'field_end'
+        else:
+            return 'field'
     
     def canEnter(self):
         return True
@@ -78,7 +107,8 @@ class Kolec(ObiektBase):
     def onEnter(self):
         self.game.zabij()
         self.game.flow.addDodatkowyTekst("Kolec. Ouch Ouch.\n")
-
+    def getIcon(self):
+        return 'spike'
 class Drzwi(ObiektBase):
     def getZnak(self):
         return '['
@@ -87,6 +117,11 @@ class Drzwi(ObiektBase):
     def onEnter(self):
         self.game.flow.setAkcjeLeft(0)
         self.game.flow.addDodatkowyTekst("Otwierasz drzwi.\n")
+    def getIcon(self):
+        o = Orientacja(self.x, self.y)
+        if o == 0:
+            return 'door_poz'
+        return 'door_pion'
         
 class Bagno(ObiektBase):
     def getZnak(self):
@@ -96,6 +131,8 @@ class Bagno(ObiektBase):
     def onStart(self):
         self.game.flow.addDodatkowyTekst("Stoisz na bagnie.\n")
         self.game.flow.setAkcjeLeft(self.game.flow.getAkcjeLeft/2)
+    def getIcon(self):
+        return 'swamp'
 
 class Portal(ObiektBase):
     def __init__(self, game):
@@ -116,13 +153,15 @@ class Portal(ObiektBase):
         self.game.setGracz(x,y)
         self.game.flow.setAkcjeLeft(0)
         self.game.flow.addDodatkowyTekst("Portal. *ziuuum*\n")
+    def getIcon(self):
+        return 'portal'
 
 class Pulapka(ObiektBase):
     def __init__(self, game):
         super().__init__(game)
-        self.odkryte = False
+        self.wpadnieta = False
     def getZnak(self):
-        if self.odkryte:
+        if self.wpadnieta:
             return '%'
         return 'O'
     def canEnter(self):
@@ -130,20 +169,33 @@ class Pulapka(ObiektBase):
     def onStart(self):
         self.game.zabij(False)
         self.game.flow.addDodatkowyTekst("Wpadles w pulapke. Ouch Ouch.\n")
-        self.odkryte = True
+        self.wpadnieta = True
+    def getIcon(self):
+        if self.wpadnieta:
+            return 'field' #zwykły field
+        return 'trap'
 
 class TajnePrzejscie(ObiektBase):
     def __init__(self, game):
         super().__init__(game)
-        self.odkryte = False
+        self.sprawdzone = False
     def getZnak(self):
-        if self.odkryte:
+        if self.sprawdzone:
             return '('
         return '|'
     def onEnter(self):
-        self.odkryte = True
+        self.sprawdzone = True
     def canEnter(self):
         return True
+    def getIcon(self):
+        o = Orientacja(self.x, self.y)
+        if not self.sprawdzone:
+            if o == 0:
+                return 'door_poz'
+            return 'door_pion'
+        if o == 0:
+            return 'door_secret_poz'
+        return 'door_secret_pion'
 
 class CzasowePrzejscie(ObiektBase):
     def __init__(self, game, otwarteNaParzyste):
@@ -162,6 +214,11 @@ class CzasowePrzejscie(ObiektBase):
         if (self.otwarteNaParzyste and ktoryRuch%2==0) or (not self.otwarteNaParzyste and ktoryRuch%2==1):
             return True
         return False
+    def getIcon(self):
+        o = Orientacja(self.x, self.y)
+        if o == 0:
+            return 'door_time_poz'
+        return 'door_time_pion'
     
 class Prezent(ObiektBase):
     def __init__(self, game, rodzaj):
@@ -183,6 +240,8 @@ class Prezent(ObiektBase):
                 self.game.flow.addDodatkowyTekst(f"Znalazles prezent! ({self.rodzaj})\n")
                 break
         self.game.flow.setAkcje(akcje)
+    def getIcon(self):
+        return 'present'
 
 class KrzyweZwierciadlo(ObiektBase):
     usuniecia = 3 #default
@@ -193,3 +252,8 @@ class KrzyweZwierciadlo(ObiektBase):
         self.game.flow.addDodatkowyTekst(f"Uhh... Zapomnialem cos? ({KrzyweZwierciadlo.usuniecia})\n")
     def canEnter(self):
         return True
+    def getIcon(self):
+        o = Orientacja(self.x, self.y)
+        if o == 0:
+            return 'door_mirror_poz'
+        return 'door_mirror_pion'
