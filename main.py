@@ -3,10 +3,10 @@ import sys
 from PyQt6.QtWidgets import (
     QApplication,
 )
-from gameFlow import GameFlow
-from akcje import *
-from obiekty import *
-from consoleInput import *
+from Game.gameFlow import GameFlow
+from Game.akcje import *
+from Game.obiekty import *
+from Input.consoleInput import *
 
 # --- INFO ---
 # Rodzaje PÓL
