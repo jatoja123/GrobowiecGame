@@ -1,6 +1,7 @@
 from gameFlow import GameFlow
 from akcje import *
 from obiekty import *
+from consoleInput import *
 
 # --- INFO ---
 # Rodzaje PÓL
@@ -56,35 +57,37 @@ limitSkretow = 1 # -1 zeby brak
 # Inne
 KrzyweZwierciadlo.usuniecia = 3
 
-ustawiaj = input("Chcesz zmienic ustawienia? (y/n) ")
-if ustawiaj == 'y':
-    print("Mapa")
-    h = int(input(f"Wysokosc mapy [{h}] "))
-    w = int(input(f"Szerokosc mapy [{w}] "))
-    print("Ruch")
-    limitAkcji = int(input(f"Akcje w turze [{limitAkcji}] "))
-    tylkoJednoliteAkcje = bool(input(f"Czy jednolite akcje? [{tylkoJednoliteAkcje}] "))
-    limitSkretow = int(input(f"Limit skretow [{limitSkretow}] "))
-    print("Mapowanie")
-    mUzycia = int(input(f"Mapowanie uzycia [2] "))
-    mKoszt = int(input(f"Mapowanie koszt [1] "))
-    mZasieg = int(input(f"Mapowanie zasieg [2] "))
-    print("Kompasowanie")
-    kUzycia = int(input(f"Kompasowanie uzycia [2] "))
-    kKoszt = int(input(f"Kompasowanie koszt [1] "))
-    print("Burzenie")
-    bUzycia = int(input(f"Burzenie uzycia [1] "))
-    bKoszt = int(input(f"Burzenie koszt [2] "))
-    print("Samobojstwo")
-    rUzycia = int(input(f"Samobojstwo uzycia [1] "))
-    rKoszt = int(input(f"Samobojstwo koszt [3] "))
-    akcje = [
-        AkcjaMapowanie(mUzycia, mKoszt, mZasieg), 
-        AkcjaKompasowanie(kUzycia, kKoszt),
-        AkcjaBurzenie(bUzycia, bKoszt),
-        AkcjaSamobojstwo(rUzycia, rKoszt)
-    ]
-    print("Pola")
-    KrzyweZwierciadlo.usuniecia = int(input(f"Ile pol wymazuje zwierciadlo? [{KrzyweZwierciadlo.usuniecia}] "))
+gameInput = ConsoleInput()
 
-flow = GameFlow(w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
+# ustawiaj = input("Chcesz zmienic ustawienia? (y/n) ")
+# if ustawiaj == 'y':
+#     print("Mapa")
+#     h = int(input(f"Wysokosc mapy [{h}] "))
+#     w = int(input(f"Szerokosc mapy [{w}] "))
+#     print("Ruch")
+#     limitAkcji = int(input(f"Akcje w turze [{limitAkcji}] "))
+#     tylkoJednoliteAkcje = bool(input(f"Czy jednolite akcje? [{tylkoJednoliteAkcje}] "))
+#     limitSkretow = int(input(f"Limit skretow [{limitSkretow}] "))
+#     print("Mapowanie")
+#     mUzycia = int(input(f"Mapowanie uzycia [2] "))
+#     mKoszt = int(input(f"Mapowanie koszt [1] "))
+#     mZasieg = int(input(f"Mapowanie zasieg [2] "))
+#     print("Kompasowanie")
+#     kUzycia = int(input(f"Kompasowanie uzycia [2] "))
+#     kKoszt = int(input(f"Kompasowanie koszt [1] "))
+#     print("Burzenie")
+#     bUzycia = int(input(f"Burzenie uzycia [1] "))
+#     bKoszt = int(input(f"Burzenie koszt [2] "))
+#     print("Samobojstwo")
+#     rUzycia = int(input(f"Samobojstwo uzycia [1] "))
+#     rKoszt = int(input(f"Samobojstwo koszt [3] "))
+#     akcje = [
+#         AkcjaMapowanie(mUzycia, mKoszt, mZasieg), 
+#         AkcjaKompasowanie(kUzycia, kKoszt),
+#         AkcjaBurzenie(bUzycia, bKoszt),
+#         AkcjaSamobojstwo(rUzycia, rKoszt)
+#     ]
+#     print("Pola")
+#     KrzyweZwierciadlo.usuniecia = int(input(f"Ile pol wymazuje zwierciadlo? [{KrzyweZwierciadlo.usuniecia}] "))
+
+flow = GameFlow(gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
