@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (
 from Game.gameFlow import GameFlow
 from Game.akcje import *
 from Game.obiekty import *
+from Input.GUIInput import GUIInput
 from Input.consoleInput import *
 
 # --- INFO ---
@@ -49,7 +50,8 @@ from Input.consoleInput import *
 class Main():
     def __init__(self):
         super().__init__()
-        self.window = MainWindow()
+        self.gameInput = GUIInput()
+        self.window = MainWindow(self.gameInput)
         
         # --- USTAWIENIA ---
         w = 5
@@ -68,8 +70,6 @@ class Main():
 
         # Inne
         KrzyweZwierciadlo.usuniecia = 3
-
-        gameInput = ConsoleInput()
 
         # ustawiaj = input("Chcesz zmienic ustawienia? (y/n) ")
         # if ustawiaj == 'y':
@@ -102,13 +102,14 @@ class Main():
         #     print("Pola")
         #     KrzyweZwierciadlo.usuniecia = int(input(f"Ile pol wymazuje zwierciadlo? [{KrzyweZwierciadlo.usuniecia}] "))
 
-        self.flow = GameFlow(gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
+        #self.flow = GameFlow(self.gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)  
-    window = MainWindow()
-
+    main = Main()
+    
     #o tu
 
-    window.show()
+    main.window.show()
     sys.exit(app.exec())
