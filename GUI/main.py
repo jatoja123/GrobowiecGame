@@ -67,9 +67,16 @@ class MainWindow(QMainWindow):
         self.central.setLayout(self.outerLayout)
         self.setCentralWidget(self.central)
 
+class Main():
+    def __init__(self):
+        super().__init__()
+        self.window = MainWindow()
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)  
     window = MainWindow()
+
+    #o tu
 
     window.show()
     sys.exit(app.exec())

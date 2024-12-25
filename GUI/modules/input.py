@@ -184,54 +184,54 @@ class Input(QWidget):
 
         self.outerLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.btnUP = Button(parent=self, text="Up", Id="W")
-        self.btnUP2 = Button(parent=self, text="Up x2", Id="WW")
-        self.btnL = Button(parent=self, text="Left", Id="A")
-        self.btnL2 = Button(parent=self, text="Left x2", Id="AA")
-        self.btnR = Button(parent=self, text="Right", Id="D")
-        self.btnR2 = Button(parent=self, text="Right x2", Id="DD")
-        self.btnD = Button(parent=self, text="Down", Id="S")
-        self.btnD2 = Button(parent=self, text="Down x2", Id="SS")
-        self.btnMap = Button(parent=self, text="Map", uses=2, size=120, Id="M")
-        self.btnCps = Button(parent=self, text="Compass", uses=1, size=120, Id="R")
-        self.btnHmr = Button(parent=self, text="Hammer", uses=2, size=120, icon="hammer.png", Id="H")
+        btnUP = Button(parent=self, text="Up", Id="W")
+        btnUP2 = Button(parent=self, text="Up x2", Id="WW")
+        btnL = Button(parent=self, text="Left", Id="A")
+        btnL2 = Button(parent=self, text="Left x2", Id="AA")
+        btnR = Button(parent=self, text="Right", Id="D")
+        btnR2 = Button(parent=self, text="Right x2", Id="DD")
+        btnD = Button(parent=self, text="Down", Id="S")
+        btnD2 = Button(parent=self, text="Down x2", Id="SS")
+        btnMap = Button(parent=self, text="Map", uses=2, size=120, Id="M")
+        btnCps = Button(parent=self, text="Compass", uses=1, size=120, Id="R")
+        btnHmr = Button(parent=self, text="Hammer", uses=2, size=120, icon="hammer.png", Id="H")
         self.btnOK = ConfirmButton(parent=self, text="OK")
         
         self.pressOrder = []
         self.buttons = [
-            self.btnUP,
-            self.btnUP2,
-            self.btnL,
-            self.btnL2,
-            self.btnR,
-            self.btnR2,
-            self.btnD,
-            self.btnD2,
-            self.btnMap,
-            self.btnCps,
-            self.btnHmr,
+            btnUP,
+            btnUP2,
+            btnL,
+            btnL2,
+            btnR,
+            btnR2,
+            btnD,
+            btnD2,
+            btnMap,
+            btnCps,
+            btnHmr,
         ]
 
         self.btnOK.button.pressed.connect(self.btnOK.onPress)
         for btn in self.buttons:
             btn.button.pressed.connect(btn.onPress)
 
-        self.forwardLayout.addWidget(self.btnUP2.button)
-        self.forwardLayout.addWidget(self.btnUP.button)
+        self.forwardLayout.addWidget(btnUP2.button)
+        self.forwardLayout.addWidget(btnUP.button)
 
-        self.leftLayout.addWidget(self.btnL2.button)
-        self.leftLayout.addWidget(self.btnL.button)
+        self.leftLayout.addWidget(btnL2.button)
+        self.leftLayout.addWidget(btnL.button)
 
-        self.backwardsLayout.addWidget(self.btnD.button)
-        self.backwardsLayout.addWidget(self.btnD2.button)
+        self.backwardsLayout.addWidget(btnD.button)
+        self.backwardsLayout.addWidget(btnD2.button)
 
-        self.rightLayout.addWidget(self.btnR.button)
-        self.rightLayout.addWidget(self.btnR2.button)
+        self.rightLayout.addWidget(btnR.button)
+        self.rightLayout.addWidget(btnR2.button)
 
         self.outerLayout.addWidget(self.btnOK.button, 1, 1)
-        self.outerLayout.addWidget(self.btnCps.button, 0, 0)
-        self.outerLayout.addWidget(self.btnMap.button, 0, 2)
-        self.outerLayout.addWidget(self.btnHmr.button, 2, 2)
+        self.outerLayout.addWidget(btnCps.button, 0, 0)
+        self.outerLayout.addWidget(btnMap.button, 0, 2)
+        self.outerLayout.addWidget(btnHmr.button, 2, 2)
 
         self.outerLayout.addLayout(self.forwardLayout, 0, 1)
         self.outerLayout.addLayout(self.backwardsLayout, 2, 1)
@@ -243,6 +243,10 @@ class Input(QWidget):
     def sizeHint(self):
         return QSize(320, 320)
     
+    def disableAll(self):
+        for btn in self.buttons:
+            btn.setDisabled(True)
+
     def getPressedOrder(self):
         return self.pressOrder
     
