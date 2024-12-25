@@ -68,7 +68,7 @@ class ConfirmButton():
         ''')
 
     def onPress(self):
-        print(self.parent.getPressedOrder())
+        #self.parent.parent.AcceptMove(self.parent.getPressedOrder())
         self.parent.resetOrder()
         for btn in self.parent.buttons:
             btn.resetState()
