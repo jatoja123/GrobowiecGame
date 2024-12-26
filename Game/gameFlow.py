@@ -1,17 +1,20 @@
 from Game.game import Game
+from Game.obiekty import KrzyweZwierciadlo
 
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
-    def __init__(self, gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow):
+    def __init__(self, gameInput, ustawienia):
         self.gameInput = gameInput
-        self.w = w
-        self.h = h
 
-        self.limitAkcji = limitAkcji
-        self.akcje = akcje
-        self.tylkoJednoliteAkcje = tylkoJednoliteAkcje
-        self.limitSkretow = limitSkretow
+        # Ustawienia gry jednolite dla wszystkich map
+        self.w = ustawienia.w
+        self.h = ustawienia.h
+        self.limitAkcji = ustawienia.limitAkcji
+        self.akcje = ustawienia.akcje
+        self.tylkoJednoliteAkcje = ustawienia.tylkoJednoliteAkcje
+        self.limitSkretow = ustawienia.limitSkretow
+        KrzyweZwierciadlo.usuniecia = ustawienia.usunieciaZwierciadla
 
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0

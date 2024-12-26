@@ -53,8 +53,6 @@ class Main():
             window = MainWindow()
             window.show()
             exit_code = app.exec()
-            # gameThread.stop() # Stop GameFlow thread
-            # gameThread.join()
             sys.exit(exit_code)
         else:
             GameEngine(isGUI=False)
