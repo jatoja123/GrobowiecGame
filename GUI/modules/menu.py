@@ -40,7 +40,7 @@ class Menu(QWidget):
         self.label.setText(text)
 
     def readInput(self, text):
-        self.window.ReadInput(text)
+        self.window.InputText(text)
 
     def btn(self):
         self.readInput(self.bottom_line_edit.text())

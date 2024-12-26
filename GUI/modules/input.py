@@ -68,7 +68,7 @@ class ConfirmButton():
         ''')
 
     def onPress(self):
-        #self.parent.parent.AcceptMove(self.parent.getPressedOrder())
+        self.parent.parent.InputMove(self.parent.getPressedOrder())
         print(self.parent.getPressedOrder())
         self.parent.resetOrder()
         for btn in self.parent.buttons:

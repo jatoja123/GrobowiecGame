@@ -18,9 +18,8 @@ MIN_H = 600
 MIN_W = 1070
 
 class MainWindow(QMainWindow):
-    def __init__(self, gameInput):
+    def __init__(self):
         super().__init__()
-        self.gameInput = gameInput
 
         self.setWindowTitle(WINDOW_TITLE)
         self.setStyleSheet(f'background-color:{BG_COLOR.name()}')
@@ -66,11 +65,11 @@ class MainWindow(QMainWindow):
         self.central.setLayout(self.outerLayout)
         self.setCentralWidget(self.central)
     
-    def AcceptMove(self, data):
-        self.gameInput.ReceiveInput(data)
+    def InputMove(self, data):
+        pass
     
-    def ReadInput(self, text):
-        self.gameInput.ReceiveInput(text)
+    def InputText(self, text):
+        pass
 
     def OutputText(self, text):
-        self.menu.setLabel(text)
+        pass
