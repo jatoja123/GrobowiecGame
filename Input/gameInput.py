@@ -15,6 +15,7 @@ class GameInput:
             print(self.inputEvent)
             print("Input received but nothing is waiting")
             return
+        print("gotcha!")
         self.receivedInput = input
         self.inputEvent.set()
         self.inputEvent = None

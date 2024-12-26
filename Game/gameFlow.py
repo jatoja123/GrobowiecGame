@@ -21,7 +21,6 @@ class GameFlow:
 
     async def WczytajGraczy(self):
         # Ile graczy?
-        print("Starting")
         playerCount = int(await self.AskPlayer("Liczba graczy: "))
         self.games = []
         w = self.w

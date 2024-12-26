@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.playerLayout = QVBoxLayout()
 
         #|---- menu widget ----|
-        self.menu = Menu(self)
+        self.menu = Menu(self, self)
         self.menu.setBaseSize(int(MIN_W*0.15)-70, MIN_H-70)
         self.menu.setMinimumSize(self.menu.baseSize()) #zmienić, tak aby było zawsze widoczne
         self.menu.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
@@ -68,6 +68,9 @@ class MainWindow(QMainWindow):
     
     def AcceptMove(self,data):
         self.gameInput.ReceiveInput(data)
+    
+    def ReadInput(self, text):
+        self.gameInput.ReceiveInput(text)
 
     def OutputText(self, text):
         self.menu.setLabel(text)
