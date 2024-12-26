@@ -32,7 +32,7 @@ class GameFlow:
                 mapType = 0
             if filename == 'input':
                 mapType = 2
-                print(f"Wprowadz mape linika po linijce ({h} linijek)")
+                self.gameInput.OutputText(f"Wprowadz mape linika po linijce ({h} linijek)")
                 mapLines = []
                 for x in range(2*h+1):
                     mapLine = await self.AskPlayer(f"Wiersz {x}:")
@@ -46,11 +46,9 @@ class GameFlow:
     async def KoniecGry(self):
         await self.AskPlayer(f"Wszyscy gracze wygrali!")
 
-
     async def AskPlayer(self, text):
-        self.gameInput.Output(text)
+        self.gameInput.OutputText(text)
         res = await self.gameInput.AskForInput()
-        print(f"res: {res}")
         return res
 
     def addDodatkowyTekst(self, txt):
@@ -72,13 +70,11 @@ class GameFlow:
         self.akcje = akcje
     
     async def printuj(self, skip = False, showAllMap = False):
-        output = f"Ruch {self.ileRuchow} | Gracz {self.graczI}\n"
-        output += self.game.getMapa(showAllMap)
+        self.gameInput.OutputText(f"Ruch {self.ileRuchow} | Gracz {self.graczI}")
+        self.gameInput.OutputMap(self.game.getMapa(showAllMap))
         
-        if self.dodatkowyTekst != "": output += self.dodatkowyTekst
+        if self.dodatkowyTekst != "": self.gameInput.OutputText(self.dodatkowyTekst)
         self.dodatkowyTekst = ""
-
-        self.gameInput.Output(output)
         if skip: a = await self.AskPlayer(f"...")
     
     async def StartFlow(self):
@@ -89,6 +85,7 @@ class GameFlow:
                 break
             self.graczI = 0
             for game in games:
+                self.gameInput.ClearOutputs()
                 self.game = game
                 if game.won:
                     self.graczI += 1

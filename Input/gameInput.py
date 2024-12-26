@@ -8,7 +8,13 @@ class GameInput:
         self.loop = None
         pass
 
-    def Output(self, data): #Wydal informacje tekstową do gracza
+    def OutputText(self, data): #Wydal informacje tekstową do gracza
+        pass
+
+    def OutputMap(self, map): #Wydal informacje tekstową do gracza
+        pass
+
+    def ClearOutputs(self): # powinno czyścić inputy
         pass
 
     def SetGameThreadLoop(self, loop):

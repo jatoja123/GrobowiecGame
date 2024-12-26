@@ -5,9 +5,14 @@ import os
 clear = lambda: os.system('cls')
 
 class ConsoleInput(GameInput):
-    def Output(self, data):
-        clear()
+    def OutputText(self, data):
         print(data)
+
+    def OutputMap(self, map):
+        print(map)
+
+    def ClearOutputs(self):
+        clear()
 
     async def AskForInput(self):
         task = asyncio.create_task(super().AskForInput())
