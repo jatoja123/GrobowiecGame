@@ -72,7 +72,7 @@ class GameFlow:
     async def printuj(self, skip = False, showAllMap = False):
         self.gameInput.ClearOutputs()
         self.gameInput.OutputText(f"Ruch {self.ileRuchow} | Gracz {self.graczI}")
-        self.gameInput.OutputMap(self.game.getMapa(showAllMap))
+        self.gameInput.OutputMap( self.game.pola, self.game.getMapa(showAllMap), self.game.odkryte)
         
         if self.dodatkowyTekst != "": self.gameInput.OutputText(self.dodatkowyTekst)
         self.dodatkowyTekst = ""

@@ -2,14 +2,12 @@ import asyncio
 from Input.gameInput import GameInput
 
 class GUIInput(GameInput):
-    def __init__(self):
-        super().__init__()
     def OutputText(self, data):
         # wyświetlaj output tekstowy
         print(f"Outputing: \n{data}")
         self.window.OutputText(data)
     
-    def OutputMap(self, map):
+    def OutputMap(self, map, mapText, odkryte):
         # Printuj mape
         pass
 

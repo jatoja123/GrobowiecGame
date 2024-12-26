@@ -11,7 +11,7 @@ class GameInput:
     def OutputText(self, data): #Wydal informacje tekstową do gracza
         pass
 
-    def OutputMap(self, map): #Wydal informacje tekstową do gracza
+    def OutputMap(self, map, mapText, odkryte): #Wydal informacje tekstową do gracza
         pass
 
     def ClearOutputs(self): # powinno czyścić inputy

@@ -7,8 +7,8 @@ class ConsoleInput(GameInput):
     def OutputText(self, data):
         print(data)
 
-    def OutputMap(self, map):
-        print(map)
+    def OutputMap(self, map, mapText, odkryte):
+        print(mapText)
 
     def ClearOutputs(self):
         clear()
