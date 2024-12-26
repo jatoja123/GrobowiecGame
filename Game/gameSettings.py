@@ -3,9 +3,9 @@ from Game.akcje import *
 
 
 @dataclass
-class GameSettings():
-    w = 5
-    h = 5
+class MapSettings():
+    default_w = 5
+    default_h = 5
     akcje = [
         AkcjaMapowanie(2, 1, 2), 
         AkcjaKompasowanie(2, 1),
@@ -16,3 +16,8 @@ class GameSettings():
     tylkoJednoliteAkcje = False
     limitSkretow = 1 # -1 zeby brak
     usunieciaZwierciadla = 3
+
+@dataclass
+class FlowSettings():
+    playerCount = 0
+    playerMapNames = [] #stąd będzie wczytywał mapy

@@ -5,11 +5,20 @@ class Game:
     won = False
     flow = None
 
-    def __init__(self, flow, w, h, inputGame, mapType, mapInput=""):
+    def setSizeWH(self, w, h):
         self.w = w # [pól]
         self.h = h # [pól]   
         self.n = 1 + 2 * w
         self.m = 1 + 2 * h
+
+    def setSizeNM(self, n, m):
+        self.n = n # [tab]
+        self.m = m # [tav]   
+        self.w = (self.n - 1)/2
+        self.h = (self.m - 1)/2
+
+    def __init__(self, flow, w, h, inputGame, mapType, mapInput=""):
+        self.setSizeWH(w,h)
         self.flow = flow
 
         n = self.n
@@ -100,6 +109,9 @@ class Game:
         pole.onStart()
     
     def readMap(self, text):
+        lines = text.split('\n')
+        self.setSizeNM(len(lines[0]), len(lines))
+        print(self.w, self.h)
         n = self.n
         m = self.m
         pola = self.pola
@@ -108,7 +120,7 @@ class Game:
         endx = 0
         endy = 0
         y = 0
-        for txt in text.split('\n'):
+        for txt in lines:
             for x in range(n):
                 curr = txt[x]
                 try:

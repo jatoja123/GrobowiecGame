@@ -4,25 +4,36 @@ from Game.obiekty import KrzyweZwierciadlo
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
-    def __init__(self, gameInput, ustawienia):
+    def __init__(self, gameInput, mapSettings, flowSettings):
+        self.flowSettings = flowSettings
         self.gameInput = gameInput
 
         # Ustawienia gry jednolite dla wszystkich map
-        self.w = ustawienia.w
-        self.h = ustawienia.h
-        self.limitAkcji = ustawienia.limitAkcji
-        self.akcje = ustawienia.akcje
-        self.tylkoJednoliteAkcje = ustawienia.tylkoJednoliteAkcje
-        self.limitSkretow = ustawienia.limitSkretow
-        KrzyweZwierciadlo.usuniecia = ustawienia.usunieciaZwierciadla
+        self.w = mapSettings.default_w
+        self.h = mapSettings.default_h
+        self.limitAkcji = mapSettings.limitAkcji
+        self.akcje = mapSettings.akcje
+        self.tylkoJednoliteAkcje = mapSettings.tylkoJednoliteAkcje
+        self.limitSkretow = mapSettings.limitSkretow
+        KrzyweZwierciadlo.usuniecia = mapSettings.usunieciaZwierciadla
 
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
 
     async def PoczatekGry(self):
+        self.games = []
+        if len(self.flowSettings.playerMapNames) == 0:
+            await self.ReadFlowSettings()
+        else:
+            for mapName in self.flowSettings.playerMapNames:
+                game = Game(self, self.w, self.h, mapName, 1) # wczytaj mape z pliku
+                game.flow = self
+                self.games.append(game)
+        
+            
+    async def ReadFlowSettings(self):
         # Ile graczy?
         playerCount = int(await self.AskPlayer("Liczba graczy: "))
-        self.games = []
         w = self.w
         h = self.h
 
