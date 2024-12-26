@@ -28,7 +28,7 @@ class ConfirmButton():
         self.button.setFixedSize(size, size)
 
         if icon: 
-            self.button.setIcon(QIcon(f'C:\Dev\GrobowiecGame\GUI\icons\{icon}'))
+            self.button.setIcon(QIcon(f'./GUI/icons/{icon}'))
             self.button.setIconSize(QSize(int(self.size), int(self.size)))
         else:
             self.button.setText(text)
@@ -134,7 +134,7 @@ class Button():
         self.button.setStyleSheet(self.notPressedStyle)
 
         if icon: 
-            self.button.setIcon(QIcon(f'C:\Dev\GrobowiecGame\GUI\icons\{icon}'))
+            self.button.setIcon(QIcon(f'./GUI/icons/{icon}'))
             self.button.setIconSize(QSize(int(self.size), int(self.size)))
         else:
             self.button.setText(text)
