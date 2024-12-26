@@ -113,7 +113,6 @@ if __name__ == "__main__":
     isGUI = True
     if len(sys.argv) > 1:
         isGUI = not (sys.argv[1] == "console" or sys.argv[1] == "c" )
-        print(isGUI, sys.argv[1])
     app = QApplication(sys.argv)  
 
     main = Main(isGUI)
