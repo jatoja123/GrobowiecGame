@@ -6,7 +6,12 @@ class GUIInput(GameInput):
         super().__init__()
     def Output(self, data):
         # wyświetlaj output tekstowy
-        pass
+        print("putputnig")
+        self.window.OutputText(data)
+
+    def ConnectToWindow(self, window):
+        self.window = window
+        print("connected")
 
     # uruchamiaj ReceiveInput kiedy gracz wybeirze input przyciskami / wpisze cos
         

@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
 )
 from Game.gameFlow import GameFlow
 from Game.akcje import *
+from Game.gameThread import AsyncGameThread
 from Game.obiekty import *
 from Input.GUIInput import GUIInput
 from Input.consoleInput import *
@@ -52,6 +53,8 @@ class Main():
         super().__init__()
         self.gameInput = GUIInput()
         self.window = MainWindow(self.gameInput)
+
+        self.gameInput.ConnectToWindow(self.window)
         
         # --- USTAWIENIA ---
         w = 5
@@ -102,14 +105,22 @@ class Main():
         #     print("Pola")
         #     KrzyweZwierciadlo.usuniecia = int(input(f"Ile pol wymazuje zwierciadlo? [{KrzyweZwierciadlo.usuniecia}] "))
 
-        #self.flow = GameFlow(self.gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
-
+        self.flow = GameFlow(self.gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)  
-    main = Main()
-    
-    #o tu
 
+    main = Main()
     main.window.show()
-    sys.exit(app.exec())
+
+    gameThread = AsyncGameThread(main.flow)
+    gameThread.start()
+
+    exit_code = app.exec()
+
+    gameThread.stop()
+    gameThread.join()
+
+    sys.exit(exit_code)
+
+    

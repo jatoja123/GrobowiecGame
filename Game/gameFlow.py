@@ -19,10 +19,9 @@ class GameFlow:
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
 
-        asyncio.run(self.WczytajGraczy())
-
     async def WczytajGraczy(self):
         # Ile graczy?
+        print("Starting")
         playerCount = int(await self.AskPlayer("Liczba graczy: "))
         self.games = []
         w = self.w

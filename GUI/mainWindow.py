@@ -68,3 +68,6 @@ class MainWindow(QMainWindow):
     
     def AcceptMove(self,data):
         self.gameInput.ReceiveInput(data)
+
+    def OutputText(self, text):
+        self.menu.setLabel(text)

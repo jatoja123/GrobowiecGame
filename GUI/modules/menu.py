@@ -11,7 +11,7 @@ class Menu(QWidget):
         self.Layout = QGridLayout()
         self.Layout.setContentsMargins(0, 0, 0, 0)
 
-        self.label = QLabel("test")
+        self.label = QLabel("lewo")
         self.label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         self.Layout.addWidget(self.label)
 
@@ -20,3 +20,8 @@ class Menu(QWidget):
     
     def sizeHint(self):
         return QSize(50, 400)
+    
+    def setLabel(self, text):
+        print("SETLABEL")
+        self.label = QLabel(text)
+        self.Layout.addWidget(self.label)

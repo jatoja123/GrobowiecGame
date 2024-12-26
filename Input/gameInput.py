@@ -1,5 +1,6 @@
 import asyncio
 
+
 class GameInput:
     def __init__(self):
         self.inputEvent = None
