@@ -70,6 +70,7 @@ class GameFlow:
         self.akcje = akcje
     
     async def printuj(self, skip = False, showAllMap = False):
+        self.gameInput.ClearOutputs()
         self.gameInput.OutputText(f"Ruch {self.ileRuchow} | Gracz {self.graczI}")
         self.gameInput.OutputMap(self.game.getMapa(showAllMap))
         
@@ -85,7 +86,6 @@ class GameFlow:
                 break
             self.graczI = 0
             for game in games:
-                self.gameInput.ClearOutputs()
                 self.game = game
                 if game.won:
                     self.graczI += 1

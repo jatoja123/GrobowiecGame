@@ -49,12 +49,14 @@ from Input.consoleInput import *
 
 
 class Main():
-    def __init__(self):
+    def __init__(self, isGUI = True):
         super().__init__()
-        self.gameInput = GUIInput()
-        self.window = MainWindow(self.gameInput)
-
-        self.gameInput.ConnectToWindow(self.window)
+        if isGUI:
+            self.gameInput = GUIInput()
+            self.window = MainWindow(self.gameInput)
+            self.gameInput.ConnectToWindow(self.window)
+        else:
+            self.gameInput = ConsoleInput()
         
         # --- USTAWIENIA ---
         w = 5
@@ -108,19 +110,29 @@ class Main():
         self.flow = GameFlow(self.gameInput, w, h, akcje, limitAkcji, tylkoJednoliteAkcje, limitSkretow)
 
 if __name__ == "__main__":
+    isGUI = True
+    if len(sys.argv) > 1:
+        isGUI = not (sys.argv[1] == "console" or sys.argv[1] == "c" )
+        print(isGUI, sys.argv[1])
     app = QApplication(sys.argv)  
 
-    main = Main()
-    main.window.show()
-
+    main = Main(isGUI)
     gameThread = AsyncGameThread(main.flow)
-    gameThread.start()
+    
+    if isGUI: 
+        main.window.show()
+        gameThread.start()
 
-    exit_code = app.exec()
-
-    gameThread.stop()
-    gameThread.join()
-
-    sys.exit(exit_code)
+        exit_code = app.exec()
+        gameThread.stop() # Stop GameFlow thread
+        gameThread.join()
+        sys.exit(exit_code)
+    else: # Wersja consolowa
+        try:
+            gameThread.start()
+        except (KeyboardInterrupt, SystemExit):
+            gameThread.stop() # Stop GameFlow thread
+            gameThread.join()
+            sys.exit()
 
     
