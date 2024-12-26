@@ -20,7 +20,7 @@ class Menu(QWidget):
 
         # Line edit with a parent widget and a default text
         self.bottom_line_edit = QLineEdit(
-            "Hello! This is a line edit.", parent=self
+            "", parent=self
         )
 
         self.button = QPushButton("Click me")
@@ -43,4 +43,4 @@ class Menu(QWidget):
         self.window.ReadInput(text)
 
     def btn(self):
-        self.readInput(self.bottom_line_edit.text)
+        self.readInput(self.bottom_line_edit.text())

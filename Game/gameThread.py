@@ -22,7 +22,10 @@ class AsyncGameThread(threading.Thread):
             # Uruchamiamy docelową korutynę
             # (tu: WczytajGraczy + ewentualnie startFlow).
             # Możesz też dać run_forever, jeśli masz pętlę w kodzie asynchronicznym.
-            self.loop.run_until_complete(self.flow.WczytajGraczy())
+            self.flow.gameInput.SetGameThreadLoop(self.loop)
+            self.loop.run_until_complete(self.flow.PoczatekGry())
+            self.loop.run_until_complete(self.flow.StartFlow())
+            self.loop.run_until_complete(self.flow.KoniecGry())
         finally:
             self.loop.close()
     

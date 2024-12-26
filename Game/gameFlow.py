@@ -1,8 +1,5 @@
 from Game.game import Game
-import os
-import asyncio
 
-clear = lambda: os.system('cls')
 Key2Ruch = {'w': (0,-1), 's': (0,1), 'a': (-1,0), 'd': (1,0)}
 
 class GameFlow:
@@ -19,9 +16,10 @@ class GameFlow:
         self.dodatkowyTekst = ""
         self.akcjeLeft = 0
 
-    async def WczytajGraczy(self):
+    async def PoczatekGry(self):
         # Ile graczy?
         playerCount = int(await self.AskPlayer("Liczba graczy: "))
+        print("r1")
         self.games = []
         w = self.w
         h = self.h
@@ -46,13 +44,14 @@ class GameFlow:
             game.flow = self
             self.games.append(game)
 
-        await self.startFlow()
+    async def KoniecGry(self):
         await self.AskPlayer(f"Wszyscy gracze wygrali!")
 
 
     async def AskPlayer(self, text):
         self.gameInput.Output(text)
         res = await self.gameInput.AskForInput()
+        print(f"res: {res}")
         return res
 
     def addDodatkowyTekst(self, txt):
@@ -74,14 +73,16 @@ class GameFlow:
         self.akcje = akcje
     
     async def printuj(self, skip = False, showAllMap = False):
-        clear()
-        self.gameInput.Output(f"Ruch {self.ileRuchow} | Gracz {self.graczI}")
-        self.gameInput.Output(self.game.getMapa(showAllMap))
-        if self.dodatkowyTekst != "": self.gameInput.Output(self.dodatkowyTekst)
+        output = f"Ruch {self.ileRuchow} | Gracz {self.graczI}\n"
+        output += self.game.getMapa(showAllMap)
+        
+        if self.dodatkowyTekst != "": output += self.dodatkowyTekst
         self.dodatkowyTekst = ""
+
+        self.gameInput.Output(output)
         if skip: a = await self.AskPlayer(f"...")
     
-    async def startFlow(self):
+    async def StartFlow(self):
         self.ileRuchow = 0
         games = self.games
         while True:

@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         self.central.setLayout(self.outerLayout)
         self.setCentralWidget(self.central)
     
-    def AcceptMove(self,data):
+    def AcceptMove(self, data):
         self.gameInput.ReceiveInput(data)
     
     def ReadInput(self, text):
